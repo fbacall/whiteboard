@@ -1,0 +1,10 @@
+{
+  "name": "whiteboard",
+  "version": "0.0.1",
+  "description": "Multiplayer whiteboard drawing on a persistent HTML5 canvas.",
+  "dependencies": {
+    "canvas": "^1.1.5",
+    "express": "^4.5.1",
+    "socket.io": "^1.0.6"
+  }
+}

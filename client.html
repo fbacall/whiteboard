@@ -1,0 +1,130 @@
+<html>
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="drawing.js"></script>
+    <script type="text/javascript">
+        var x = 0;
+        var y = 1;
+
+        var socket = io();
+        var buffer = [];
+        var mouseDown = false;
+        var mousePos = [];
+        var colour;
+
+        var canvas;
+        var ctx;
+
+        var interval;
+
+        $(document).ready(function() {
+            canvas = document.getElementById("canvas");
+            ctx = canvas.getContext("2d");
+            canvas.addEventListener("mousedown", doMouseDown, false);
+            canvas.addEventListener("mouseup", doMouseUp, false);
+            canvas.addEventListener("mousemove", doMouseMove, false);
+            interval = window.setInterval(send, 500); // Send data every half a second.
+
+            $('.colour').click(function () {
+                setColour($(this).css('background-color').slice(4,-1).split(','));
+            });
+
+            setColour([0,0,0]);
+        });
+
+        // Draw incoming data
+        socket.on('draw', function(data) {
+            drawing.drawData(ctx, data);
+        });
+
+        // Draw the initial canvas state
+        socket.on('state', function(state) {
+            var img = new Image;
+            img.onload = function() {
+                ctx.drawImage(img,0,0);
+            };
+            img.src = state;
+        });
+
+        function send() {
+            if(buffer.length > 0) {
+                buffer.unshift(['c', colour]); // This isn't really the right time to do this.
+                socket.emit('draw', buffer);
+                buffer = [];
+            }
+        }
+
+        function doMouseDown(event) {
+            mouseDown = true;
+            mousePos = [event.pageX - canvas.offsetLeft, event.pageY - canvas.offsetTop];
+        }
+
+        function doMouseUp() {
+            mouseDown = false;
+        }
+
+        function doMouseMove(event) {
+            if (mouseDown) {
+                ctx.strokeStyle = 'rgb(' + colour.join(',') + ')';
+                ctx.beginPath();
+                var startPos = [mousePos[x], mousePos[y]];
+                var endPos = [event.pageX - canvas.offsetLeft, event.pageY - canvas.offsetTop];
+                ctx.moveTo(startPos[x], startPos[y]);
+                ctx.lineTo(endPos[x], endPos[y]);
+                ctx.stroke();
+                buffer.push(['l', startPos, endPos]); // Keep a buffer of all the drawing commands performed, to be sent asynchronously.
+                mousePos[x] = endPos[x];
+                mousePos[y] = endPos[y];
+            }
+        }
+
+        function setColour(c) {
+            colour = c;
+            $('#canvas').css('border-color', 'rgb(' + colour.join(',') + ')');
+        }
+    </script>
+    <style type="text/css">
+        body {
+            font-size: 13px;
+            font-family: sans-serif;
+            color: #333;
+            background-color: #eee;
+        }
+
+        #wrapper {
+            width: 1026px;
+            margin: 0.5em auto;
+        }
+
+        #canvas {
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+
+        .colour {
+            display: inline-block;
+            width: 2em;
+            height: 1em;
+            border: 1px solid #000;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+<div id="wrapper">
+    <h1>Whiteboard</h1>
+    <canvas id="canvas" width="1024" height="600">
+        Canvas not supported in your browser
+    </canvas>
+    <div class="colour" style="background-color: rgb(0,0,0)"></div>
+    <div class="colour" style="background-color: rgb(255,255,255)"></div>
+    <div class="colour" style="background-color: rgb(0,0,255)"></div>
+    <div class="colour" style="background-color: rgb(0,255,255)"></div>
+    <div class="colour" style="background-color: rgb(0,255,0)"></div>
+    <div class="colour" style="background-color: rgb(255,255,0)"></div>
+    <div class="colour" style="background-color: rgb(255,0,0)"></div>
+    <div class="colour" style="background-color: rgb(255,0,255)"></div>
+</div>
+</body>
+</html>
