@@ -3,11 +3,15 @@
     var y = 1;
 
     // Draw data onto canvas
-    function drawData(ctx, data) {
+    function drawCommands(ctx, data) {
         for (var i = 0; i < data.length; i++) {
-            var f = data[i].shift();
-            commands[f].apply(ctx, data[i]); // Pass context as "this" lol
+            drawCommand(ctx, data[i]);
         }
+    }
+
+    function drawCommand(ctx, command) {
+        var f = command.shift();
+        commands[f].apply(ctx, command); // Pass context as "this" lol
     }
 
     commands = {
@@ -25,7 +29,9 @@
         }
     };
 
-    exports.drawData = drawData
-
-})(typeof exports === 'undefined'? this['mymodule']={}: exports);
+    exports.draw = {
+        list: drawCommands,
+        single: drawCommand
+    }
+})(typeof exports === 'undefined'? this['drawing']={}: exports);
 // Pattern from: http://caolanmcmahon.com/posts/writing_for_node_and_the_browser/

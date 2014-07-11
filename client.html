@@ -35,7 +35,7 @@
 
         // Draw incoming data
         socket.on('draw', function(data) {
-            drawing.drawData(ctx, data);
+            drawing.draw.list(ctx, data);
         });
 
         // Draw the initial canvas state
@@ -67,12 +67,10 @@
         function doMouseMove(event) {
             if (mouseDown) {
                 ctx.strokeStyle = 'rgb(' + colour.join(',') + ')';
-                ctx.beginPath();
                 var startPos = [mousePos[x], mousePos[y]];
                 var endPos = [event.pageX - canvas.offsetLeft, event.pageY - canvas.offsetTop];
-                ctx.moveTo(startPos[x], startPos[y]);
-                ctx.lineTo(endPos[x], endPos[y]);
-                ctx.stroke();
+                var command = ['l', startPos, endPos];
+                drawing.draw.single(ctx, command);
                 buffer.push(['l', startPos, endPos]); // Keep a buffer of all the drawing commands performed, to be sent asynchronously.
                 mousePos[x] = endPos[x];
                 mousePos[y] = endPos[y];

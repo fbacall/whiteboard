@@ -20,7 +20,7 @@ io.on('connection', function(socket) {
     console.log('New connection');
     socket.emit('state', canvas.toDataURL());
     socket.on('draw', function(data) {
-        drawing.drawData(ctx, data);
+        drawing.draw.list(ctx, data);
         socket.broadcast.emit('draw', data);
     });
 });
