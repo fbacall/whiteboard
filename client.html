@@ -71,7 +71,7 @@
                 var endPos = [event.pageX - canvas.offsetLeft, event.pageY - canvas.offsetTop];
                 var command = ['l', startPos, endPos];
                 drawing.draw.single(ctx, command);
-                buffer.push(['l', startPos, endPos]); // Keep a buffer of all the drawing commands performed, to be sent asynchronously.
+                buffer.push(command); // Keep a buffer of all the drawing commands performed, to be sent asynchronously.
                 mousePos[x] = endPos[x];
                 mousePos[y] = endPos[y];
             }
