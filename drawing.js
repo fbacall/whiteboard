@@ -10,8 +10,7 @@
     }
 
     function drawCommand(ctx, command) {
-        var f = command.shift();
-        commands[f].apply(ctx, command); // Pass context as "this" lol
+        commands[command[0]].apply(ctx, command[1]); // Pass context as "this" lol
     }
 
     commands = {
