@@ -1,0 +1,62 @@
+body {
+    font-size: 13px;
+    font-family: sans-serif;
+    color: #333;
+    background-color: #eee;
+}
+
+#wrapper {
+    width: 1026px;
+    margin: 0.5em auto;
+}
+
+#canvases {
+    position: relative;
+    width: 1026px;
+    height: 602px;
+}
+
+#drawing-canvas, #preview-canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    border: 1px solid #ccc;
+}
+
+#drawing-canvas {
+    background-color: #fff;
+    z-index: 0;
+}
+
+#selected-colour {
+    display: inline-block;
+    width: 2em;
+    height: 2em;
+    border: 1px solid #000;
+    margin: 5px 0;
+}
+.colour {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border: 1px solid #000;
+    margin: 5px 0;
+    cursor: pointer;
+}
+
+.tool {
+    display: inline-block;
+    width: 5em;
+    height: 1.5em;
+    border: 1px solid #000;
+    margin: 5px 0;
+    padding: 0.25em 1em;
+    text-align: center;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.tool.selected {
+    background-color: #9cf;
+}

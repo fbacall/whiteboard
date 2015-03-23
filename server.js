@@ -16,6 +16,14 @@ app.get('/drawing.js', function(req, res) {
     res.sendfile('drawing.js');
 });
 
+app.get('/client.js', function(req, res) {
+    res.sendfile('client.js');
+});
+
+app.get('/client.css', function(req, res) {
+    res.sendfile('client.css');
+});
+
 io.on('connection', function(socket) {
     console.log('New connection');
     socket.emit('state', canvas.toDataURL());
