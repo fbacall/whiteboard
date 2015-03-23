@@ -10,7 +10,7 @@ var mouse = {
     downPosition: []
 };
 
-var colour, tool; // selected drawing colour and tool
+var colour, tool, size; // selected drawing colour, tool and brush size
 
 var previewCanvas, drawingCanvas, previewCtx, drawingCtx;
 
@@ -36,8 +36,13 @@ $(document).ready(function() {
         selectTool($(this).data('tool'));
     });
 
+    $('#size-select').change(function () {
+        selectSize($(this).val());
+    });
+
     selectColour([0,0,0]);
     selectTool('brush');
+    selectSize(2);
 });
 
 // Draw incoming data
@@ -56,7 +61,8 @@ socket.on('state', function(state) {
 
 function send() {
     if(buffer.length > 0) {
-        buffer.unshift(['c', [colour]]); // This isn't really the right time to do this.
+        buffer.unshift(['c', [colour]]); // Make sure to set the drawing colour
+        buffer.unshift(['s', [size]]); // and size size
         socket.emit('draw', buffer);
         buffer = [];
     }
@@ -71,6 +77,12 @@ function selectTool(t) {
     $('.tool.selected').removeClass('selected');
     $(".tool[data-tool='"+t+"']").addClass('selected');
     tool = tools[t];
+}
+
+function selectSize(s) {
+    //$('.tool.selected').removeClass('selected');
+    //$(".tool[data-tool='"+s+"']").addClass('selected');
+    size = s;
 }
 
 // Get the position of the mouse on the canvas
@@ -96,6 +108,7 @@ var tools = {
         },
         mouseMove: function (event) {
             if (mouse.down) {
+                drawingCtx.lineWidth = size;
                 drawingCtx.strokeStyle = 'rgb(' + colour.join(',') + ')';
                 var startPos = [mouse.position[x], mouse.position[y]];
                 var endPos = getPosition(event);
@@ -129,6 +142,7 @@ var tools = {
 
         drawLine: function (ctx, event) {
             clearPreview();
+            ctx.lineWidth = size;
             ctx.strokeStyle = 'rgb(' + colour.join(',') + ')';
             var startPos = [mouse.downPosition[x], mouse.downPosition[y]];
             var endPos = getPosition(event);
@@ -151,28 +165,47 @@ var tools = {
         },
         mouseUp: function (event) {
             mouse.down = false;
-            buffer = buffer.concat(this.drawBox(drawingCtx, event));
+            buffer.push(this.drawBox(drawingCtx, event));
             mouse.downPosition = [];
         },
 
-        drawBox: function (ctx, event) {
+        drawBox: function (ctx, event, fill) {
+            fill = fill || false;
             clearPreview();
+            ctx.lineWidth = size;
             ctx.strokeStyle = 'rgb(' + colour.join(',') + ')';
+            ctx.fillStyle = 'rgb(' + colour.join(',') + ')';
             var v1 = [mouse.downPosition[x], mouse.downPosition[y]];
             var v3 = getPosition(event);
 
             var v2 = [v1[x], v3[y]],
                 v4 = [v3[x], v1[y]];
 
-            var commands = [
-                ['l', [v1, v2]],
-                ['l', [v2, v3]],
-                ['l', [v3, v4]],
-                ['l', [v4, v1]]
-            ];
-            drawing.draw.list(ctx, commands);
+            var command = ['b', [v1, v2, v3, v4, fill]];
+            drawing.draw.single(ctx, command);
 
-            return commands;
+            return command;
+        }
+    },
+
+    // TODO: Inherit from quad
+    fillQuad: {
+        mouseDown: function (event) {
+            mouse.down = true;
+            mouse.downPosition = getPosition(event);
+        },
+        mouseMove: function (event) {
+            if (mouse.down) {
+                this.drawBox(previewCtx, event);
+            }
+        },
+        mouseUp: function (event) {
+            mouse.down = false;
+            buffer.push(this.drawBox(drawingCtx, event));
+            mouse.downPosition = [];
+        },
+        drawBox: function (ctx, event) {
+            return tools.quad.drawBox(ctx, event, true);
         }
     }
 };

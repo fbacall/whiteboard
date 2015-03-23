@@ -22,9 +22,29 @@
             this.stroke();
         },
 
+        // Draw a box, where v1-v4 are the coordinates of each corner
+        b: function (v1, v2, v3, v4, fill) {
+            this.beginPath();
+            this.moveTo(v1[x], v1[y]);
+            this.lineTo(v2[x], v2[y]);
+            this.lineTo(v3[x], v3[y]);
+            this.lineTo(v4[x], v4[y]);
+            this.lineTo(v1[x], v1[y]);
+            if(fill)
+                this.fill();
+            else
+                this.stroke();
+        },
+
         // Switch the drawing colour
         c: function (colour) {
             this.strokeStyle = "rgb(" + colour.join(',') + ")";
+            this.fillStyle = "rgb(" + colour.join(',') + ")";
+        },
+
+        // Switch the line thickness
+        s: function (size) {
+            this.lineWidth = size;
         }
     };
 

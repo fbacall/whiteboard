@@ -19,7 +19,7 @@
         </canvas>
     </div>
 
-    <div id="palette">
+    <div class="setting" id="palette">
         <div id="selected-colour" style="background-color: rgb(0,0,0)"></div>
         <div class="colour" style="background-color: rgb(0,0,0)"></div>
         <div class="colour" style="background-color: rgb(255,255,255)"></div>
@@ -31,10 +31,22 @@
         <div class="colour" style="background-color: rgb(255,0,255)"></div>
     </div>
 
-    <div id="tools">
+    <div class="setting" id="tools">
         <div class="tool" data-tool="brush">Brush</div>
         <div class="tool" data-tool="line">Line</div>
         <div class="tool" data-tool="quad">Box</div>
+        <div class="tool" data-tool="fillQuad">Filled Box</div>
+    </div>
+
+    <div class="setting" id="size">
+        Size
+        <select id="size-select">
+            <option value="2">1</option>
+            <option value="4">2</option>
+            <option value="6">3</option>
+            <option value="8">4</option>
+            <option value="10">5</option>
+        </select>
     </div>
 </div>
 </body>

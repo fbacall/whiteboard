@@ -33,14 +33,15 @@ body {
     display: inline-block;
     width: 2em;
     height: 2em;
-    border: 1px solid #000;
+    border: 1px solid #ccc;
     margin: 5px 0;
 }
+
 .colour {
     display: inline-block;
-    width: 1em;
-    height: 1em;
-    border: 1px solid #000;
+    width: 1.5em;
+    height: 1.5em;
+    border: 1px solid #ccc;
     margin: 5px 0;
     cursor: pointer;
 }
@@ -49,8 +50,7 @@ body {
     display: inline-block;
     width: 5em;
     height: 1.5em;
-    border: 1px solid #000;
-    margin: 5px 0;
+    border: 1px solid #ccc;
     padding: 0.25em 1em;
     text-align: center;
     background-color: #fff;
@@ -59,4 +59,14 @@ body {
 
 .tool.selected {
     background-color: #9cf;
+    border-color: #72a9ff;
+}
+
+.setting {
+    display: inline-block;
+    padding-right: 1em;
+}
+
+#palette {
+    width: 100%;
 }
