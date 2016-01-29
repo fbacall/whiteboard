@@ -23,8 +23,8 @@ $(document).ready(function() {
     drawingCtx = drawingCanvas.getContext("2d");
 
     previewCanvas.addEventListener("mousedown", function (event) { tool.mouseDown(event) }, false);
-    previewCanvas.addEventListener("mouseup", function (event) { tool.mouseUp(event) }, false);
-    previewCanvas.addEventListener("mousemove", function (event) { tool.mouseMove(event) }, false);
+    window.addEventListener("mouseup", function (event) { tool.mouseUp(event) }, false);
+    window.addEventListener("mousemove", function (event) { tool.mouseMove(event) }, false);
 
     interval = window.setInterval(send, 500); // Send data every half a second.
 
@@ -88,9 +88,18 @@ function selectSize(s) {
 // Get the position of the mouse on the canvas
 function getPosition(event) {
     var r = previewCanvas.getBoundingClientRect();
+    var x = event.clientX - r.left - document.documentElement.scrollLeft;
+    var y = event.clientY - r.top - document.documentElement.scrollTop;
+    if(x < 0)
+        x = 0;
+    if(y < 0)
+        y = 0;
+    if(x >= r.right)
+        x = r.right;
+    if(y >= r.bottom)
+        y = r.bottom;
 
-    return [event.clientX - r.left - document.documentElement.scrollLeft,
-        event.clientY - r.top - document.documentElement.scrollTop];
+    return [x, y];
 }
 
 function clearPreview() {
