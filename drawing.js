@@ -22,6 +22,22 @@
             this.stroke();
         },
 
+        // Draw a quadratic curve
+        qc: function (start, control, end) {
+            this.beginPath();
+            this.moveTo(start[x], start[y]);
+            this.quadraticCurveTo(control[x], control[y], end[x], end[y]);
+            this.stroke();
+        },
+
+        // Draw a bezier curve
+        bc: function (start, c1, c2, end) {
+            this.beginPath();
+            this.moveTo(start[x], start[y]);
+            this.bezierCurveTo(c1[x], c1[y], c2[x], c2[y], end[x], end[y]);
+            this.stroke();
+        },
+
         // Draw a box, where v1-v4 are the coordinates of each corner
         b: function (v1, v2, v3, v4, fill) {
             this.beginPath();
