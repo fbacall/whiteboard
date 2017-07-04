@@ -1,6 +1,6 @@
 var x = 0, y = 1; // Constants
 
-var socket = io({ path: 'socket.io' });
+var socket = io({ path: window.location.pathname + 'socket.io' });
 var buffer = []; // Buffer of drawing commands to send to server
 
 // Object to hold mouse state
