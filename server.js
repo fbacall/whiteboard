@@ -14,19 +14,19 @@ var port = parseInt(process.argv[2] || '3000');
 var debug = process.argv[3] == 'true';
 
 app.get('/', function(req, res) {
-    res.sendfile('client.html');
+    res.sendFile('client.html', { root: __dirname });
 });
 
 app.get('/drawing.js', function(req, res) {
-    res.sendfile('drawing.js');
+    res.sendFile('drawing.js', { root: __dirname });
 });
 
 app.get('/client.js', function(req, res) {
-    res.sendfile('client.js');
+    res.sendFile('client.js', { root: __dirname });
 });
 
 app.get('/client.css', function(req, res) {
-    res.sendfile('client.css');
+    res.sendFile('client.css', { root: __dirname });
 });
 
 io.on('connection', function(socket) {
