@@ -8,8 +8,52 @@
 </head>
 
 <body>
+<h1>Whiteboard</h1>
 <div id="wrapper">
-    <h1>Whiteboard</h1>
+    <div id="sidebar">
+        <div id="selected-colour" style="background-color: rgb(0,0,0)"></div>
+        <div id="palette">
+            <div class="colour" style="background-color: rgb(0,0,0)"></div>
+            <div class="colour" style="background-color: rgb(64,64,64)"></div>
+            <div class="colour" style="background-color: rgb(127,127,127)"></div>
+            <div class="colour" style="background-color: rgb(196,196,196)"></div>
+            <div class="colour" style="background-color: rgb(255,255,255)"></div>
+            <div class="colour" style="background-color: rgb(0,0,127)"></div>
+            <div class="colour" style="background-color: rgb(0,0,255)"></div>
+            <div class="colour" style="background-color: rgb(146, 202, 255)"></div>
+            <div class="colour" style="background-color: rgb(106, 255, 214)"></div>
+            <div class="colour" style="background-color: rgb(0,127,0)"></div>
+            <div class="colour" style="background-color: rgb(83, 211, 23)"></div>
+            <div class="colour" style="background-color: rgb(127,127,0)"></div>
+            <div class="colour" style="background-color: rgb(255,255,0)"></div>
+            <div class="colour" style="background-color: rgb(223, 127, 54)"></div>
+            <div class="colour" style="background-color: rgb(255,0,0)"></div>
+            <div class="colour" style="background-color: rgb(255, 157, 203)"></div>
+            <div class="colour" style="background-color: rgb(255,0,255)"></div>
+            <div class="colour" style="background-color: rgb(127,0,127)"></div>
+            <div class="colour" style="background-color: rgb(63, 34, 26)"></div>
+            <div class="colour" style="background-color: rgb(125, 72, 48)"></div>
+            <div class="colour" style="background-color: rgb(215, 181, 125)"></div>
+            <div class="colour" style="background-color: rgb(224, 207, 116)"></div>
+        </div>
+
+        <div class="setting" id="tools">
+            <div class="tool" data-tool="brush">Brush</div>
+            <div class="tool" data-tool="line">Line</div>
+            <div class="tool" data-tool="quad">Box</div>
+            <div class="tool" data-tool="fillQuad">Filled Box</div>
+        </div>
+        <div class="setting" id="size">
+            Size
+            <select id="size-select" autocomplete="off">
+                <option value="2">1</option>
+                <option value="4">2</option>
+                <option value="6">3</option>
+                <option value="8">4</option>
+                <option value="10">5</option>
+            </select>
+        </div>
+    </div>
     <div id="canvases">
         <canvas id="drawing-canvas" width="1024" height="600">
             Canvas not supported in your browser
@@ -19,35 +63,6 @@
         </canvas>
     </div>
 
-    <div class="setting" id="palette">
-        <div id="selected-colour" style="background-color: rgb(0,0,0)"></div>
-        <div class="colour" style="background-color: rgb(0,0,0)"></div>
-        <div class="colour" style="background-color: rgb(255,255,255)"></div>
-        <div class="colour" style="background-color: rgb(0,0,255)"></div>
-        <div class="colour" style="background-color: rgb(0,255,255)"></div>
-        <div class="colour" style="background-color: rgb(0,255,0)"></div>
-        <div class="colour" style="background-color: rgb(255,255,0)"></div>
-        <div class="colour" style="background-color: rgb(255,0,0)"></div>
-        <div class="colour" style="background-color: rgb(255,0,255)"></div>
-    </div>
-
-    <div class="setting" id="tools">
-        <div class="tool" data-tool="brush">Brush</div>
-        <div class="tool" data-tool="line">Line</div>
-        <div class="tool" data-tool="quad">Box</div>
-        <div class="tool" data-tool="fillQuad">Filled Box</div>
-    </div>
-
-    <div class="setting" id="size">
-        Size
-        <select id="size-select">
-            <option value="2">1</option>
-            <option value="4">2</option>
-            <option value="6">3</option>
-            <option value="8">4</option>
-            <option value="10">5</option>
-        </select>
-    </div>
     <a href="https://github.com/fbacall/whiteboard">github.com/fbacall/whiteboard</a>
 </div>
 </body>

@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-size: 13px;
     font-family: sans-serif;
@@ -5,21 +9,23 @@ body {
     background-color: #eee;
 }
 
+h1 {
+    text-align: center;
+}
+
 #wrapper {
     width: 1026px;
     margin: 0.5em auto;
+    display: flex;
 }
 
 #canvases {
+    flex-grow: 1;
     position: relative;
-    width: 1026px;
-    height: 602px;
 }
 
 #drawing-canvas, #preview-canvas {
     position: absolute;
-    left: 0;
-    top: 0;
     z-index: 1;
     border: 1px solid #ccc;
 }
@@ -30,26 +36,16 @@ body {
 }
 
 #selected-colour {
-    display: inline-block;
-    width: 2em;
-    height: 2em;
-    border: 1px solid #ccc;
-    margin: 5px 0;
+    height: 50px;
+    width: 100%;
 }
 
 .colour {
-    display: inline-block;
-    width: 1.5em;
-    height: 1.5em;
-    border: 1px solid #ccc;
-    margin: 5px 0;
+    height: 25px;
     cursor: pointer;
 }
 
 .tool {
-    display: inline-block;
-    width: 5em;
-    height: 1.5em;
     border: 1px solid #ccc;
     padding: 0.25em 1em;
     text-align: center;
@@ -63,10 +59,21 @@ body {
 }
 
 .setting {
-    display: inline-block;
-    padding-right: 1em;
+    flex: 1;
+}
+
+#sidebar {
+    width: 120px;
+    flex-shrink: 0;
+}
+
+#sidebar > div {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
 }
 
 #palette {
-    width: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    height: 250px
 }
