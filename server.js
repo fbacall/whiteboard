@@ -5,7 +5,7 @@ var Canvas = require('canvas');
 var drawing = require('./drawing');
 var util = require('util');
 
-var canvas = new Canvas(1024,600);
+var canvas = Canvas.createCanvas(1024, 600);
 var ctx = canvas.getContext('2d');
 ctx.strokeStyle = "rgb(0, 0, 0)";
 ctx.lineCap = "round";
