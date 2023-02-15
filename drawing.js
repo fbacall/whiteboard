@@ -1,10 +1,10 @@
 (function(exports){
-    var x = 0;
-    var y = 1;
+    const x = 0;
+    const y = 1;
 
     // Draw data onto canvas
     function drawCommands(ctx, data) {
-        for (var i = 0; i < data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             drawCommand(ctx, data[i]);
         }
     }
@@ -13,7 +13,7 @@
         commands[command[0]].apply(ctx, command[1]); // Pass context as "this" lol
     }
 
-    commands = {
+    const commands = {
         // Draw a line from start point ([x,y]) to end point
         l: function (start, end) {
             this.beginPath();

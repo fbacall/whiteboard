@@ -1,22 +1,22 @@
-var x = 0, y = 1; // Constants
+const x = 0, y = 1; // Constants
 
-var socket = io({ path: window.location.pathname + 'socket.io' });
-var buffer = []; // Buffer of drawing commands to send to server
+const socket = io({ path: window.location.pathname + 'socket.io' });
+const buffer = []; // Buffer of drawing commands to send to server
 
 // Object to hold mouse state
-var mouse = {
+const mouse = {
     down: false,
     position: [],
     downPosition: []
 };
 
-var colour, tool, size; // selected drawing colour, tool and brush size
+let colour, tool, size; // selected drawing colour, tool and brush size
 
-var previewCanvas, drawingCanvas, previewCtx, drawingCtx;
+let previewCanvas, drawingCanvas, previewCtx, drawingCtx;
 
-var interval;
+let interval;
 
-$(document).ready(function() {
+document.addEventListener("DOMContentLoaded", function() {
     previewCanvas = document.getElementById("preview-canvas");
     drawingCanvas = document.getElementById("drawing-canvas");
     previewCtx = previewCanvas.getContext("2d");
@@ -29,19 +29,19 @@ $(document).ready(function() {
 
     interval = window.setInterval(send, 500); // Send data every half a second.
 
-    $('.colour').click(function () {
-        selectColour($(this).css('background-color').slice(4,-1).split(','));
+    document.querySelectorAll(".colour").forEach(e =>
+        e.addEventListener("click", () => selectColour(e.style.backgroundColor.slice(4,-1).split(',')))
+    );
+
+    document.querySelectorAll(".tool").forEach(e =>
+        e.addEventListener("click", () => selectTool(e.dataset.tool))
+    );
+
+    document.getElementById("size-select").addEventListener("change", function () {
+        selectSize(this.value);
     });
 
-    $('.tool').click(function () {
-        selectTool($(this).data('tool'));
-    });
-
-    $('#size-select').change(function () {
-        selectSize($(this).val());
-    });
-
-    selectColour([0,0,0]);
+    selectColour([0, 0, 0]);
     selectTool('brush');
     selectSize(2);
 });
@@ -53,9 +53,9 @@ socket.on('draw', function(data) {
 
 // Draw the initial canvas state
 socket.on('state', function(state) {
-    var img = new Image;
+    const img = new Image;
     img.onload = function() {
-        drawingCtx.drawImage(img,0,0);
+        drawingCtx.drawImage(img, 0, 0);
     };
     img.src = state;
 });
@@ -65,39 +65,39 @@ function send() {
         buffer.unshift(['c', [colour]]); // Make sure to set the drawing colour
         buffer.unshift(['s', [size]]); // and size size
         socket.emit('draw', buffer);
-        buffer = [];
+        buffer.length = 0;
     }
 }
 
 function selectColour(c) {
     colour = c;
-    $('#selected-colour').css('background-color', 'rgb(' + colour.join(',') + ')');
+    document.getElementById('selected-colour').style.backgroundColor = 'rgb(' + colour.join(',') + ')';
 }
 
 function selectTool(t) {
-    $('.tool.selected').removeClass('selected');
-    $(".tool[data-tool='"+t+"']").addClass('selected');
+    const selectedTool = document.querySelector('.tool.selected');
+    if (selectedTool)
+        selectedTool.classList.remove('selected');
+    document.querySelector(".tool[data-tool='"+t+"']").classList.add('selected');
     tool = tools[t];
 }
 
 function selectSize(s) {
-    //$('.tool.selected').removeClass('selected');
-    //$(".tool[data-tool='"+s+"']").addClass('selected');
     size = s;
 }
 
 // Get the position of the mouse on the canvas
 function getPosition(event) {
-    var r = previewCanvas.getBoundingClientRect();
-    var x = event.clientX - r.left - document.documentElement.scrollLeft;
-    var y = event.clientY - r.top - document.documentElement.scrollTop;
-    if(x < 0)
+    const r = previewCanvas.getBoundingClientRect();
+    let x = event.clientX - r.left - document.documentElement.scrollLeft;
+    let y = event.clientY - r.top - document.documentElement.scrollTop;
+    if (x < 0)
         x = 0;
-    if(y < 0)
+    if (y < 0)
         y = 0;
-    if(x >= r.right)
+    if (x >= r.right)
         x = r.right;
-    if(y >= r.bottom)
+    if (y >= r.bottom)
         y = r.bottom;
 
     return [x, y];
@@ -110,7 +110,7 @@ function clearPreview() {
     previewCtx.restore();
 }
 
-var tools = {};
+const tools = {};
 tools.brush = {
     points: [],
 
@@ -137,22 +137,22 @@ tools.brush = {
     drawCurve: function () {
         drawingCtx.lineWidth = size;
         drawingCtx.strokeStyle = 'rgb(' + colour.join(',') + ')';
-        var startPos = this.points[0];
-        var endPos = this.points[this.points.length - 1];
+        const startPos = this.points[0];
+        const endPos = this.points[this.points.length - 1];
 
         if (this.points.length <= 2) {
             this.points.push(startPos);
             this.points.push(endPos);
         }
 
-        var c1 = [0,0];
-        for (var i = 1; i < this.points.length - 1; i++) {
+        const c1 = [0,0];
+        for (let i = 1; i < this.points.length - 1; i++) {
             c1[0] += this.points[i][0];
             c1[1] += this.points[i][1];
         }
         c1[0] = c1[0] / (this.points.length - 2);
         c1[1] = c1[1] / (this.points.length - 2);
-        var command = ['qc', [startPos, c1, endPos]];
+        const command = ['qc', [startPos, c1, endPos]];
         drawing.draw.single(drawingCtx, command);
         buffer.push(command); // Keep a buffer of all the drawing commands performed, to be sent asynchronously.
         this.points = [this.points[this.points.length - 1]];
@@ -183,9 +183,9 @@ tools.line = {
         clearPreview();
         ctx.lineWidth = size;
         ctx.strokeStyle = 'rgb(' + colour.join(',') + ')';
-        var startPos = [this.origin[x], this.origin[y]];
-        var endPos = getPosition(event);
-        var command = ['l', [startPos, endPos]];
+        const startPos = [this.origin[x], this.origin[y]];
+        const endPos = getPosition(event);
+        const command = ['l', [startPos, endPos]];
         drawing.draw.single(ctx, command);
 
         return command;
@@ -218,13 +218,13 @@ tools.quad = {
         ctx.lineWidth = size;
         ctx.strokeStyle = 'rgb(' + colour.join(',') + ')';
         ctx.fillStyle = 'rgb(' + colour.join(',') + ')';
-        var v1 = [this.origin[x], this.origin[y]];
-        var v3 = getPosition(event);
+        const v1 = [this.origin[x], this.origin[y]];
+        const v3 = getPosition(event);
 
-        var v2 = [v1[x], v3[y]],
-            v4 = [v3[x], v1[y]];
+        const v2 = [v1[x], v3[y]],
+              v4 = [v3[x], v1[y]];
 
-        var command = ['b', [v1, v2, v3, v4, this.fill]];
+        const command = ['b', [v1, v2, v3, v4, this.fill]];
         drawing.draw.single(ctx, command);
 
         return command;

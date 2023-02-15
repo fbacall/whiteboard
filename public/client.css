@@ -7,27 +7,31 @@ body {
     font-family: sans-serif;
     color: #333;
     background-color: #eee;
-}
-
-h1 {
     text-align: center;
 }
 
+
 #wrapper {
-    width: 1026px;
     margin: 0.5em auto;
     display: flex;
+    width: 1284px;
+    gap: 10px;
 }
 
 #canvases {
     flex-grow: 1;
     position: relative;
+    width: 1024px;
+    height: 600px;
+    margin-right: 130px;
 }
 
 #drawing-canvas, #preview-canvas {
     position: absolute;
     z-index: 1;
     border: 1px solid #ccc;
+    left: 0;
+    top: 0;
 }
 
 #drawing-canvas {
@@ -38,6 +42,7 @@ h1 {
 #selected-colour {
     height: 50px;
     width: 100%;
+    border: 1px solid #ccc;
 }
 
 .colour {
