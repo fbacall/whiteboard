@@ -132,6 +132,7 @@ tools.brush = {
         if (this.points.length) {
             tools.brush.drawCurve(event);
         }
+        this.points = [];
     },
     drawCurve: function () {
         drawingCtx.lineWidth = size;
